@@ -1,0 +1,8 @@
+package com.study.ecommerce.entities;
+
+public class Category {
+	
+	private Integer id;
+	private String name;
+
+}

@@ -1,0 +1,5 @@
+package com.study.ecommerce.services;
+
+public interface UserService {
+
+}

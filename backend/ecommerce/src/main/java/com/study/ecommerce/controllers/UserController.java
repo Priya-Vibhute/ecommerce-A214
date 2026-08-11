@@ -1,0 +1,4 @@
+package com.study.ecommerce.controllers;
+public class UserController {
+
+}
