@@ -1,0 +1,18 @@
+package com.study.ecommerce.controllers;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.study.ecommerce.dtos.UserResponseDto;
+
+@RestController
+@RequestMapping("/users")
+public class UserController {
+	
+	public ResponseEntity<UserResponseDto> registerUser()
+	{
+		return null;
+	}
+
+}

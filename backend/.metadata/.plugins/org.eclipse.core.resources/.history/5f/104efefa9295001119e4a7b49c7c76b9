@@ -1,0 +1,20 @@
+package com.study.ecommerce.dtos;
+
+import com.study.ecommerce.entities.Category;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+public class ProductDto {
+	
+	private Integer id;
+	private String name; 
+	private String description;
+	private Integer price;
+	private String imageUrl;
+	private Category category;
+
+}

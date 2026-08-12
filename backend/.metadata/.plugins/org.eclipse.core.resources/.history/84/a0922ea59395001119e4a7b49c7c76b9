@@ -1,0 +1,6 @@
+package com.study.ecommerce.services;
+
+public interface ProductService {
+
+	
+}

@@ -23,7 +23,6 @@ INDEX VERSION 1.134+C:\Users\classroom1\Desktop\ecommerceA214\backend\.metadata\
 3143559110.index
 3847717324.index
 898048696.index
-2290215115.index
 2841594397.index
 2920017195.index
 1352027182.index
@@ -88,6 +87,7 @@ INDEX VERSION 1.134+C:\Users\classroom1\Desktop\ecommerceA214\backend\.metadata\
 1794442554.index
 315489422.index
 3425685686.index
+2998810903.index
 42361513.index
 3721355795.index
 357113469.index
