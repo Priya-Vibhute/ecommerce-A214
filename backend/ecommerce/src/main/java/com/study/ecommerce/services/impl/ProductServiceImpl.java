@@ -39,23 +39,45 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDto> getProducts() {
 		
-		return null;
+//		to fetch products from product table
+		List<Product> products = productRepository.findAll();
+		
+		List<ProductDto> dtoList = products
+		.stream()
+		.map(p->modelMapper.map(p, ProductDto.class))
+		.toList();
+		
+		return dtoList;
 	}
 
 	@Override
 	public ProductDto getProductById(Integer id) {
 		
-		return null;
+        //search product by id	
+		Product product = productRepository.findById(id)
+		.orElseThrow(()->new RuntimeException("Product with given id not found"));
+		
+//		entity to dto
+		ProductDto productDto = modelMapper.map(product,ProductDto.class);
+		
+		return productDto;
 	}
 
 	@Override
 	public void deleteProduct(Integer id) {
 	
+		Product product = productRepository.findById(id)
+				.orElseThrow(()->new RuntimeException("Product with given id not found"));
 		
+		productRepository.delete(product);
+			
 	}
 
 	@Override
 	public ProductDto updateProduct(Integer id, ProductDto productDto) {
+		
+		Product product = productRepository.findById(id)
+				.orElseThrow(()->new RuntimeException("Product with given id not found"));
 		
 		return null;
 	}
