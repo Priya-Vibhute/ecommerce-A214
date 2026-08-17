@@ -9,6 +9,7 @@ INDEX VERSION 1.134+C:\Users\classroom1\Desktop\ecommerceA214\backend\.metadata\
 1342078031.index
 478542231.index
 296379165.index
+3246385060.index
 2029140098.index
 1562106107.index
 3974649423.index
@@ -49,6 +50,7 @@ INDEX VERSION 1.134+C:\Users\classroom1\Desktop\ecommerceA214\backend\.metadata\
 3543611871.index
 502924321.index
 1170151906.index
+4104517289.index
 2290215115.index
 2869357821.index
 1765329605.index
@@ -58,6 +60,7 @@ INDEX VERSION 1.134+C:\Users\classroom1\Desktop\ecommerceA214\backend\.metadata\
 602656033.index
 1852336269.index
 1947868092.index
+2889901609.index
 77172132.index
 3226415709.index
 3485715961.index
@@ -77,6 +80,7 @@ INDEX VERSION 1.134+C:\Users\classroom1\Desktop\ecommerceA214\backend\.metadata\
 134287113.index
 980560650.index
 3206795278.index
+1620277292.index
 2548938946.index
 2920017195.index
 1157872604.index
@@ -103,6 +107,7 @@ INDEX VERSION 1.134+C:\Users\classroom1\Desktop\ecommerceA214\backend\.metadata\
 3413270776.index
 2863787510.index
 4234132465.index
+289074321.index
 2407872484.index
 2633810559.index
 4070015431.index

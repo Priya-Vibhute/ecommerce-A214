@@ -1,5 +1,6 @@
 package com.study.ecommerce.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +10,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserDto {
 	private String id;
+	
+	@NotNull
 	private String firstName;
+	
+	@NotNull
 	private String lastName;
+	
+	@NotNull
 	private String email;
+	
+	@NotNull
 	private String password;
+	
+	@NotNull(message = "confirm password cannot be null")
 	private String confirmPassword;
 }

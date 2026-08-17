@@ -1,7 +1,0 @@
-package com.study.ecommerce.services.impl;
-
-import com.study.ecommerce.services.UserService;
-
-public class UserServiceImpl implements UserService{
-
-}

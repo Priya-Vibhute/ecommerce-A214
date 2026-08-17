@@ -12,6 +12,8 @@ import com.study.ecommerce.dtos.UserDto;
 import com.study.ecommerce.dtos.UserResponseDto;
 import com.study.ecommerce.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -24,7 +26,7 @@ public class UserController {
 //	===============================================================
 	
 	@PostMapping
-	public ResponseEntity<UserResponseDto> registerUser(@RequestBody UserDto userDto)
+	public ResponseEntity<UserResponseDto> registerUser(@Valid @RequestBody UserDto userDto)
 	{
 	    UserResponseDto responseDto = userService.register(userDto);
 		return new ResponseEntity<UserResponseDto>(responseDto,HttpStatus.CREATED);
