@@ -79,7 +79,16 @@ public class ProductServiceImpl implements ProductService {
 		Product product = productRepository.findById(id)
 				.orElseThrow(()->new RuntimeException("Product with given id not found"));
 		
-		return null;
+		product.setName(productDto.getName());
+		product.setPrice(productDto.getPrice());
+		product.setDescription(productDto.getDescription());
+		product.setImageUrl(productDto.getImageUrl());
+		
+		Product savedProduct = productRepository.save(product);
+		
+		ProductDto savedDto = modelMapper.map(savedProduct, ProductDto.class);
+		
+		return savedDto;
 	}
 
 }

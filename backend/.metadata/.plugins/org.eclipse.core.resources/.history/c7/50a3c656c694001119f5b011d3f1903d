@@ -1,9 +1,0 @@
-package com.study.ecommerce.services;
-
-import com.study.ecommerce.dtos.UserDto;
-
-public interface UserService {
-	
-	register(UserDto userDto);
-
-}

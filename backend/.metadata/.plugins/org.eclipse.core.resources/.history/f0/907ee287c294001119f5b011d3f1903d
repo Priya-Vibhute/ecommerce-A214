@@ -1,5 +1,0 @@
-package com.study.ecommerce.repositories;
-
-public interface UserRepository {
-
-}

@@ -1,0 +1,36 @@
+package com.study.ecommerce.services.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.study.ecommerce.dtos.ProductDto;
+import com.study.ecommerce.repositories.CategoryRepository;
+import com.study.ecommerce.repositories.ProductRepository;
+import com.study.ecommerce.services.CategoryService;
+
+@Service
+public class CategoryServiceImpl implements CategoryService {
+	
+	@Autowired
+	private ProductRepository productRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@Override
+	public void addProductToCategory(Integer categoryId, Integer productId) {
+		
+		
+		
+	}
+
+	@Override
+	public List<ProductDto> getProductsByCategory(Integer CategoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+
+}

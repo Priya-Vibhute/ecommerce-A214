@@ -1,0 +1,22 @@
+package com.study.ecommerce.services.impl;
+
+import java.util.List;
+
+import com.study.ecommerce.dtos.ProductDto;
+import com.study.ecommerce.services.CategoryService;
+
+public class CategoryServiceImpl implements CategoryService {
+
+	@Override
+	public void addProductToCategory(Integer categoryId, Integer productId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<ProductDto> getProductsByCategory(Integer CategoryId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

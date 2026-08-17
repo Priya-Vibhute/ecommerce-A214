@@ -1,0 +1,7 @@
+package com.study.ecommerce.services.impl;
+
+import com.study.ecommerce.services.CategoryService;
+
+public class CategoryServiceImpl implements CategoryService {
+
+}

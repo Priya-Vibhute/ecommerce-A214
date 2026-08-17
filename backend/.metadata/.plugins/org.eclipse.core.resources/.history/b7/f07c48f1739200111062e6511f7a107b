@@ -1,6 +1,0 @@
-package com.study.ecommerce.dtos;
-
-public class LoginResponseDto {
-
-	   private String token;
-}
