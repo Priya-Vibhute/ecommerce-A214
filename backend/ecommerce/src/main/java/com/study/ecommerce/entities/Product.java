@@ -1,5 +1,7 @@
 package com.study.ecommerce.entities;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -8,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,5 +40,11 @@ public class Product {
 	@ManyToOne
 //	@JsonManagedReference
 	private Category category;
+	
+	@OneToMany(mappedBy = "product")
+	private List<CartItem> cartItems;
+	
+	@OneToMany(mappedBy = "product")
+	private List<OrderItem> orderItems;
 	
 }

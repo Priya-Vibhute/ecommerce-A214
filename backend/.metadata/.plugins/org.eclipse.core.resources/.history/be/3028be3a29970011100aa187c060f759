@@ -1,5 +1,0 @@
-package com.study.ecommerce.projections;
-
-public interface CategoryProjection {
-
-}

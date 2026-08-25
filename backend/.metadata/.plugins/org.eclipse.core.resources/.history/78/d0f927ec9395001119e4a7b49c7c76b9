@@ -1,8 +1,0 @@
-package com.study.ecommerce.services;
-
-import com.study.ecommerce.dtos.ProductDto;
-
-public interface ProductService {
-
- ProductDto	addProduct(ProductDto productDto);
-}
