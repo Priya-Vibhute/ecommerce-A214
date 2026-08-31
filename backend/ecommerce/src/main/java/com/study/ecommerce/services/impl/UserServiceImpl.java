@@ -1,7 +1,9 @@
 package com.study.ecommerce.services.impl;
 
+import org.jspecify.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.study.ecommerce.dtos.UserDto;
@@ -20,6 +22,8 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 
 	@Override
@@ -30,6 +34,10 @@ public class UserServiceImpl implements UserService{
 
 //		set ROLE_USER role
 		user.setRole(Role.ROLE_USER);
+		
+//		encode password
+		String encodedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodedPassword);
 		
 //	    save object to database 	
 		User savedUser = userRepository.save(user);
