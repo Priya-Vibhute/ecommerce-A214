@@ -1,5 +1,7 @@
 package com.study.ecommerce.security;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.study.ecommerce.security.jwt.AuthEntryPointJwt;
 import com.study.ecommerce.security.jwt.AuthTokenFilter;
@@ -32,7 +37,7 @@ public class SecurityConfig {
 	{
 		httpSecurity
 		.csrf(csrf->csrf.disable())
-		.cors(Customizer.withDefaults())          //CorsconfiguarationSource
+		.cors(cors->cors.configurationSource(configurationSource()))          //CorsconfiguarationSource
 		.authorizeHttpRequests(request->
 		     
 		request
@@ -68,6 +73,27 @@ public class SecurityConfig {
 	{
 		return authenticationConfiguration.getAuthenticationManager();
 	}
+	
+	
+//	Global CORS
+	
+	@Bean
+	public CorsConfigurationSource configurationSource()
+	{
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowedOrigins(List.of("http://localhost:5173"));
+		config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+		config.setAllowedHeaders(List.of("*"));
+		config.setAllowCredentials(true);
+		
+		UrlBasedCorsConfigurationSource source =
+				 new UrlBasedCorsConfigurationSource();
+		 
+		 source.registerCorsConfiguration("/**", config);
+		return source;
+	}
+	
+	
 	
 	
 	

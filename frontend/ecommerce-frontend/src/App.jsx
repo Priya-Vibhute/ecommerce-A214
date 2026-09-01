@@ -5,12 +5,15 @@ import heroImg from './assets/hero.png'
 import './App.css'
 import { RouterProvider } from 'react-router-dom'
 import router from './routes/AppRoute'
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
 
   return (
    <>
+   <AuthProvider>
       <RouterProvider  router={router}/>
+    </AuthProvider>
    </>
   )
 }

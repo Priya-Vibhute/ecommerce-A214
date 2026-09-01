@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import api from "../../../api";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,8 +12,18 @@ function Login() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async(data) => {
     console.log("Login Data:", data);
+
+    try {
+
+      const response=await api.post("/auth/login",data);
+      console.log(response.data)
+      
+    } catch (error) {
+      alert("Something went wrong")
+      console.log(error)
+    }
   };
 
   return (
