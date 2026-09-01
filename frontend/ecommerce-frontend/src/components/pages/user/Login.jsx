@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import api from "../../../api";
+import { AuthContext } from "../../../context/AuthContext";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+
+ const {login}= useContext(AuthContext)// line 1
 
   const {
     register,
@@ -19,6 +22,8 @@ function Login() {
 
       const response=await api.post("/auth/login",data);
       console.log(response.data)
+    //   call login function from context and pass token to it
+      login(response.data.token)//line 2
       
     } catch (error) {
       alert("Something went wrong")
