@@ -10,6 +10,7 @@ import AdminLayout from "../components/common/admin/AdminLayout";
 import Dashboard from "../components/pages/admin/Dashboard";
 import ProductAdmin from "../components/pages/admin/ProductAdmin";
 import AddProduct from "../components/pages/admin/AddProduct";
+import ProtectedRoute from "./ProtectedRoute";
 
 
 
@@ -22,19 +23,33 @@ const router=createBrowserRouter([
             {path:'register',element:<Register/>},
             {path:'login',element:<Login/>},
             {path:'products',element:<Products/>},
-            {path:'cart',element:<Cart/>},
-            {path:'checkout',element:<Checkout/>}
+            {
+               element:<ProtectedRoute/>,
+               children:[
+                   {path:'cart',element:<Cart/>},
+                   {path:'checkout',element:<Checkout/>}
+               ]
+            },
+
+           
         ]
     },
+
     {
-        path:"/admin",
-        element:<AdminLayout/>,
+        element:<ProtectedRoute/>,
         children:[
+            {
+            path:"/admin",
+            element:<AdminLayout/>,
+             children:[
             {index:true,element:<Dashboard/>},
             {path:'products',element:<ProductAdmin/>},
             {path:'products/add',element:<AddProduct/>},
         ]
     }
+        ]
+    },
+    
 
   
     

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
-import { Navigate } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom'
 
 function ProtectedRoute() {
 
@@ -9,8 +9,7 @@ function ProtectedRoute() {
   if(!isAuthenticated)
     return <Navigate to={"/login"}/>
 
-
-  return 
+  return <Outlet/>
 }
 
 export default ProtectedRoute

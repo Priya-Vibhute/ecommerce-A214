@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.study.ecommerce.dtos.LoginDto;
 import com.study.ecommerce.dtos.LoginResponseDto;
 import com.study.ecommerce.dtos.UserDto;
+import com.study.ecommerce.dtos.UserResponseDto;
 import com.study.ecommerce.entities.User;
 import com.study.ecommerce.security.jwt.JwtUtils;
 
@@ -62,7 +63,7 @@ public class AuthController {
 		
 		String token = jwtUtils.generateTokenFromUsername(user);
 		
-		UserDto userDto = modelMapper.map(user, UserDto.class);
+		 UserResponseDto userDto = modelMapper.map(user, UserResponseDto.class);
 		
 		return ResponseEntity.ok(new LoginResponseDto(userDto, token));
 	}
