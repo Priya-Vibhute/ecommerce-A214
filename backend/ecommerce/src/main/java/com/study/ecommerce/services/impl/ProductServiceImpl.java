@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.study.ecommerce.dtos.ProductDto;
@@ -36,16 +38,29 @@ public class ProductServiceImpl implements ProductService {
 		return savedDto;
 	}
 
+//	@Override
+//	public List<ProductDto> getProducts() {
+//		
+////		to fetch products from product table
+//		List<Product> products = productRepository.findAll();
+//		
+//		List<ProductDto> dtoList = products
+//		.stream()
+//		.map(p->modelMapper.map(p, ProductDto.class))
+//		.toList();
+//		
+//		return dtoList;
+//	}
+	
+	
+
 	@Override
-	public List<ProductDto> getProducts() {
+	public Page<ProductDto> getProducts(int page,int size) {
 		
 //		to fetch products from product table
-		List<Product> products = productRepository.findAll();
+		Page<Product> products = productRepository.findAll(PageRequest.of(page, size));
 		
-		List<ProductDto> dtoList = products
-		.stream()
-		.map(p->modelMapper.map(p, ProductDto.class))
-		.toList();
+		Page<ProductDto>  dtoList= products.map(p->modelMapper.map(p, ProductDto.class));
 		
 		return dtoList;
 	}

@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import api from '../../../api'
 
 function Products() {
+
+  const [products, setProducts] = useState(null)
+
+  const fetchProducts = async () => {
+    try {
+
+      const response = await api.get("/products");
+      setProducts(response.data.content)
+
+    } catch (error) {
+      alert("Something went wrong")
+    }
+  }
+
+
+  useEffect(() => {
+    fetchProducts()
+  }, [])
+
+
   return (
     <div>
-      <h1>Products</h1>
+        {products && products.map(p=><p>{p.name}</p>)}
     </div>
   )
 }

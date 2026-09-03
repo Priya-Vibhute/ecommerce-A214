@@ -15,7 +15,7 @@ function ProductAdmin() {
     try {
 
       const response=await api.get("/products");
-      setProducts(response.data)
+      setProducts(response.data.content)
       
     } catch (error) {
       console.log(error)
