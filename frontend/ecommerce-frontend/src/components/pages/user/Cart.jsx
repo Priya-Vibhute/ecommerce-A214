@@ -1,6 +1,37 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../../../api";
 
 function Cart() {
+
+  const [cartItems,setCartItems]=useState(null);
+
+  const fetchCart=async ()=>{
+
+    try {
+
+      const response=await api.get("/cart")
+      setCartItems(response.data.cartItems)
+      
+    } catch (error) {
+      alert("something went wrong")
+    }
+
+  }
+
+
+  useEffect(()=>{
+    fetchCart();
+  },[])
+
+
+const subtotal = () =>{
+   return cartItems.reduce((total, item)=>{
+    return total + item.product.price * item.quantity
+   },0)
+}
+
+
   return (
     <div className="cart-page">
 
@@ -55,14 +86,15 @@ function Cart() {
 
               {/* Product */}
 
-              <div className="cart-product">
+
+              { cartItems && cartItems.map(c=>      <div className="cart-product">
 
                 {/* Product Image */}
 
                 <div className="cart-image-wrapper">
 
                   <img
-                    src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"
+                    src={c.product.imageUrl}
                     alt="Wireless Headphones"
                   />
 
@@ -78,12 +110,11 @@ function Cart() {
                   </span>
 
                   <h4>
-                    Wireless Headphones
+                   {c.product.name}
                   </h4>
 
                   <p>
-                    Premium wireless headphones with
-                    noise cancellation and high-quality sound.
+                    {c.product.description}
                   </p>
 
                   <button className="remove-cart">
@@ -104,7 +135,7 @@ function Cart() {
                     </button>
 
                     <span>
-                      1
+                       {c.quantity}
                     </span>
 
                     <button>
@@ -114,12 +145,16 @@ function Cart() {
                   </div>
 
                   <div className="product-price">
-                    $59.99
+                    {c.product.price}
                   </div>
 
                 </div>
 
-              </div>
+              </div>)}
+
+        
+
+              
 
             </div>
 
@@ -134,6 +169,8 @@ function Cart() {
             </Link>
 
           </div>
+
+          
 
 
           {/* ================= ORDER SUMMARY ================= */}
@@ -150,11 +187,12 @@ function Cart() {
               <div className="summary-item">
 
                 <span>
-                  Subtotal
+                  Subtotal 
+                  
                 </span>
 
                 <strong>
-                  $59.99
+              {  subtotal().toFixed(2)}
                 </strong>
 
               </div>

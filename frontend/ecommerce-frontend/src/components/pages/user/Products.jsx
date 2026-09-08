@@ -25,6 +25,23 @@ function Products() {
   }, [currentPage])
 
 
+  const addToCart=async (productId)=>{
+
+    try {
+
+      const response=await api.post(`/cart/add-to-cart/${productId}`,{
+        quantity:1
+      })
+
+      alert("Product added into cart")
+      
+    } catch (error) {
+      
+      alert("Something went wrong")
+    }
+
+  }
+
   return (
     <div className="container py-4">
 
@@ -59,7 +76,7 @@ function Products() {
                     ${p.price}
                   </p>
 
-                  <button className='btn btn-primary'>Add to Cart</button>
+                  <button className='btn btn-primary' onClick={()=>addToCart(p.id)}>Add to Cart</button>
                 </div>
               </div>
             </div>
