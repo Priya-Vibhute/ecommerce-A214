@@ -192,7 +192,7 @@ const subtotal = () =>{
                 </span>
 
                 <strong>
-              {  subtotal().toFixed(2)}
+              {  cartItems && subtotal().toFixed(2)}
                 </strong>
 
               </div>

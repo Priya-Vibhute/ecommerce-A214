@@ -1,6 +1,49 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../../../api";
+import { useForm } from "react-hook-form";
 
 function Checkout() {
+
+  const {register,handleSubmit}=useForm();
+
+  const onSubmit=(data)=>{
+    console.log(data)
+  }
+
+
+  const [cartItems,setCartItems]=useState(null);
+
+  const fetchCart=async ()=>{
+
+    try {
+
+      const response=await api.get("/cart")
+      setCartItems(response.data.cartItems)
+      
+    } catch (error) {
+      alert("something went wrong")
+    }
+
+  }
+
+
+  useEffect(()=>{
+    fetchCart();
+  },[])
+
+
+const subtotal = () =>{
+   return cartItems.reduce((total, item)=>{
+    return total + item.product.price * item.quantity
+   },0)
+}
+
+
+
+
+
+
   return (
     <div className="checkout-page">
 
@@ -30,6 +73,7 @@ function Checkout() {
           {/* ================= LEFT SECTION ================= */}
 
           <div className="col-lg-8">
+            <form action="" onSubmit={handleSubmit(onSubmit)}>
 
             {/* CUSTOMER INFORMATION */}
 
@@ -66,6 +110,7 @@ function Checkout() {
                     type="text"
                     className="form-control"
                     placeholder="Enter first name"
+                    {...register("firstName")}
                   />
 
                 </div>
@@ -81,6 +126,7 @@ function Checkout() {
                     type="text"
                     className="form-control"
                     placeholder="Enter last name"
+                     {...register("lastName")}
                   />
 
                 </div>
@@ -96,6 +142,7 @@ function Checkout() {
                     type="email"
                     className="form-control"
                     placeholder="you@example.com"
+                     {...register("email")}
                   />
 
                 </div>
@@ -111,6 +158,7 @@ function Checkout() {
                     type="tel"
                     className="form-control"
                     placeholder="+1 234 567 8900"
+                     {...register("phoneNo")}
                   />
 
                 </div>
@@ -155,6 +203,7 @@ function Checkout() {
                     type="text"
                     className="form-control"
                     placeholder="House number, street name"
+                     {...register("address")}
                   />
 
                 </div>
@@ -170,6 +219,7 @@ function Checkout() {
                     type="text"
                     className="form-control"
                     placeholder="Enter city"
+                     {...register("city")}
                   />
 
                 </div>
@@ -185,6 +235,7 @@ function Checkout() {
                     type="text"
                     className="form-control"
                     placeholder="Enter state"
+                     {...register("state")}
                   />
 
                 </div>
@@ -200,6 +251,7 @@ function Checkout() {
                     type="text"
                     className="form-control"
                     placeholder="Enter ZIP code"
+                     {...register("pincode")}
                   />
 
                 </div>
@@ -211,25 +263,25 @@ function Checkout() {
                     Country
                   </label>
 
-                  <select className="form-select">
+                  <select className="form-select"  {...register("country")}>
 
                     <option>
                       Select Country
                     </option>
 
-                    <option>
+                    <option value={"US"}>
                       United States
                     </option>
 
-                    <option>
+                    <option value={"CN"}>
                       Canada
                     </option>
 
-                    <option>
+                    <option value={""}>
                       United Kingdom
                     </option>
 
-                    <option>
+                    <option value={"IN"}>
                       India
                     </option>
 
@@ -241,8 +293,9 @@ function Checkout() {
 
             </div>
 
+               <button className="btn btn-primary" type="submit">Add address</button>
 
-           
+           </form>
 
           </div>
 
@@ -260,30 +313,38 @@ function Checkout() {
 
               {/* Product */}
 
+              { cartItems && cartItems.map(c=>(
+
+                
               <div className="checkout-product">
 
                 <img
-                  src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200"
+                  src={c.product.imageUrl}
                   alt="Wireless Headphones"
                 />
 
                 <div>
 
                   <h6>
-                    Wireless Headphones
+                    {c.product.name}
                   </h6>
 
                   <span>
-                    Qty: 1
+                    {c.quantity}
                   </span>
 
                 </div>
 
                 <strong>
-                  $59.99
+                  {c.product.price* c.quantity}
                 </strong>
 
               </div>
+                
+              ))}
+
+
+              
 
 
               <hr />
@@ -340,7 +401,7 @@ function Checkout() {
                 </span>
 
                 <strong>
-                  $59.99
+                  {cartItems && subtotal()}
                 </strong>
 
               </div>
