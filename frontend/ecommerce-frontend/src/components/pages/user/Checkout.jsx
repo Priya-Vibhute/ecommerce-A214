@@ -1,26 +1,39 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useAsyncError } from "react-router-dom";
 import api from "../../../api";
 import { useForm } from "react-hook-form";
 
 function Checkout() {
 
-  const {register,handleSubmit}=useForm();
+  const { register, handleSubmit } = useForm();
 
-  const onSubmit=(data)=>{
+  const onSubmit = async (data) => {
     console.log(data)
-  }
-
-
-  const [cartItems,setCartItems]=useState(null);
-
-  const fetchCart=async ()=>{
 
     try {
 
-      const response=await api.get("/cart")
+      const response = await api.post("/address", data)
+      setSelectedAddress(response.data.id)
+      alert("address added successfully")
+
+    } catch (error) {
+      alert("something went wrong ")
+    }
+
+  }
+
+
+  const [cartItems, setCartItems] = useState(null);
+  const [addresses,setAddresses]=useState(null);
+  const [selectedAddress,setSelectedAddress]=useState(null);
+
+  const fetchCart = async () => {
+
+    try {
+
+      const response = await api.get("/cart")
       setCartItems(response.data.cartItems)
-      
+
     } catch (error) {
       alert("something went wrong")
     }
@@ -28,264 +41,163 @@ function Checkout() {
   }
 
 
-  useEffect(()=>{
+  const fetchAddresses=async ()=>{
+     try {
+
+      const response=await api.get("/address")
+      setAddresses(response.data)
+      
+     } catch (error) {
+         alert("Something went wrong")
+     }
+  }
+
+  useEffect(() => {
     fetchCart();
-  },[])
+    fetchAddresses();
+  }, [])
 
 
-const subtotal = () =>{
-   return cartItems.reduce((total, item)=>{
-    return total + item.product.price * item.quantity
-   },0)
-}
+  const subtotal = () => {
+    return cartItems.reduce((total, item) => {
+      return total + item.product.price * item.quantity
+    }, 0)
+  }
+
+
+  const handlePayment=()=>{
+    //1
+    if(!selectedAddress)
+    {
+      alert("address not selected")
+      return;
+    }
+  }
 
 
 
 
 
+ return (
+  <div className="checkout-page bg-light min-vh-100">
 
-  return (
-    <div className="checkout-page">
+    <div className="container py-5">
 
-      <div className="container py-5">
+      {/* ================= HEADER ================= */}
 
-        {/* ================= HEADER ================= */}
+      <div className="text-center mb-5">
+        <span className="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mb-3">
+          CHECKOUT
+        </span>
 
-        <div className="checkout-header mb-5">
+        <h1 className="fw-bold display-6 mb-2">
+          Complete Your Order
+        </h1>
 
-          <span className="checkout-subtitle">
-            CHECKOUT
-          </span>
-
-          <h1>
-            Complete Your Order
-          </h1>
-
-          <p>
-            Enter your details and choose your preferred payment method.
-          </p>
-
-        </div>
+        <p className="text-secondary mb-0">
+          Enter your details and choose your preferred payment method.
+        </p>
+      </div>
 
 
-        <div className="row g-4">
+      <div className="row g-4">
 
-          {/* ================= LEFT SECTION ================= */}
+        {/* ================= LEFT SECTION ================= */}
 
-          <div className="col-lg-8">
-            <form action="" onSubmit={handleSubmit(onSubmit)}>
+        <div className="col-lg-8">
+
+          <form action="" onSubmit={handleSubmit(onSubmit)}>
 
             {/* CUSTOMER INFORMATION */}
 
-            <div className="checkout-card mb-4">
+            <div className="card border-0 shadow-sm rounded-4 mb-4">
 
-              <div className="checkout-card-header">
+              <div className="card-body p-4">
 
-                <div className="step-number">
-                  1
-                </div>
+                <div className="d-flex align-items-center gap-3 mb-4">
 
-                <div>
-                  <h4>
-                    Customer Information
-                  </h4>
+                  <div className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                    style={{ width: "42px", height: "42px" }}>
+                    1
+                  </div>
 
-                  <p>
-                    Enter your contact details
-                  </p>
-                </div>
+                  <div>
+                    <h4 className="fw-bold mb-1">
+                      Customer Information
+                    </h4>
 
-              </div>
-
-
-              <div className="row g-3">
-
-                <div className="col-md-6">
-
-                  <label>
-                    First Name
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter first name"
-                    {...register("firstName")}
-                  />
+                    <p className="text-secondary mb-0 small">
+                      Enter your contact details
+                    </p>
+                  </div>
 
                 </div>
 
 
-                <div className="col-md-6">
+                <div className="row g-3">
 
-                  <label>
-                    Last Name
-                  </label>
+                  <div className="col-md-6">
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter last name"
-                     {...register("lastName")}
-                  />
+                    <label className="form-label fw-semibold">
+                      First Name
+                    </label>
 
-                </div>
+                    <input
+                      type="text"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="Enter first name"
+                      {...register("firstName")}
+                    />
 
-
-                <div className="col-md-6">
-
-                  <label>
-                    Email Address
-                  </label>
-
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="you@example.com"
-                     {...register("email")}
-                  />
-
-                </div>
+                  </div>
 
 
-                <div className="col-md-6">
+                  <div className="col-md-6">
 
-                  <label>
-                    Phone Number
-                  </label>
+                    <label className="form-label fw-semibold">
+                      Last Name
+                    </label>
 
-                  <input
-                    type="tel"
-                    className="form-control"
-                    placeholder="+1 234 567 8900"
-                     {...register("phoneNo")}
-                  />
+                    <input
+                      type="text"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="Enter last name"
+                      {...register("lastName")}
+                    />
 
-                </div>
-
-              </div>
-
-            </div>
+                  </div>
 
 
-            {/* SHIPPING ADDRESS */}
+                  <div className="col-md-6">
 
-            <div className="checkout-card mb-4">
+                    <label className="form-label fw-semibold">
+                      Email Address
+                    </label>
 
-              <div className="checkout-card-header">
+                    <input
+                      type="email"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="you@example.com"
+                      {...register("email")}
+                    />
 
-                <div className="step-number">
-                  2
-                </div>
-
-                <div>
-                  <h4>
-                    Shipping Address
-                  </h4>
-
-                  <p>
-                    Where should we deliver your order?
-                  </p>
-                </div>
-
-              </div>
+                  </div>
 
 
-              <div className="row g-3">
+                  <div className="col-md-6">
 
-                <div className="col-12">
+                    <label className="form-label fw-semibold">
+                      Phone Number
+                    </label>
 
-                  <label>
-                    Address
-                  </label>
+                    <input
+                      type="tel"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="+1 234 567 8900"
+                      {...register("phoneNo")}
+                    />
 
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="House number, street name"
-                     {...register("address")}
-                  />
-
-                </div>
-
-
-                <div className="col-md-6">
-
-                  <label>
-                    City
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter city"
-                     {...register("city")}
-                  />
-
-                </div>
-
-
-                <div className="col-md-6">
-
-                  <label>
-                    State
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter state"
-                     {...register("state")}
-                  />
-
-                </div>
-
-
-                <div className="col-md-6">
-
-                  <label>
-                    ZIP Code
-                  </label>
-
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter ZIP code"
-                     {...register("pincode")}
-                  />
-
-                </div>
-
-
-                <div className="col-md-6">
-
-                  <label>
-                    Country
-                  </label>
-
-                  <select className="form-select"  {...register("country")}>
-
-                    <option>
-                      Select Country
-                    </option>
-
-                    <option value={"US"}>
-                      United States
-                    </option>
-
-                    <option value={"CN"}>
-                      Canada
-                    </option>
-
-                    <option value={""}>
-                      United Kingdom
-                    </option>
-
-                    <option value={"IN"}>
-                      India
-                    </option>
-
-                  </select>
+                  </div>
 
                 </div>
 
@@ -293,98 +205,375 @@ const subtotal = () =>{
 
             </div>
 
-               <button className="btn btn-primary" type="submit">Add address</button>
 
-           </form>
+            {/* ================= SAVED ADDRESSES ================= */}
 
-          </div>
+            <div className="card border-0 shadow-sm rounded-4 mb-4">
 
+              <div className="card-body p-4">
 
-          {/* ================= RIGHT SECTION ================= */}
+                <div className="d-flex align-items-center justify-content-between mb-4">
 
-          <div className="col-lg-4">
+                  <div>
+                    <h4 className="fw-bold mb-1">
+                      Saved Addresses
+                    </h4>
 
-            <div className="checkout-summary">
+                    <p className="text-secondary mb-0 small">
+                      Select an address for delivery
+                    </p>
+                  </div>
 
-              <h4>
-                Order Summary
-              </h4>
-
-
-              {/* Product */}
-
-              { cartItems && cartItems.map(c=>(
-
-                
-              <div className="checkout-product">
-
-                <img
-                  src={c.product.imageUrl}
-                  alt="Wireless Headphones"
-                />
-
-                <div>
-
-                  <h6>
-                    {c.product.name}
-                  </h6>
-
-                  <span>
-                    {c.quantity}
+                  <span className="badge bg-primary-subtle text-primary rounded-pill">
+                    {addresses?.length || 0} saved
                   </span>
 
                 </div>
 
-                <strong>
-                  {c.product.price* c.quantity}
-                </strong>
+
+                {addresses && addresses.length > 0 ? (
+
+                  <div className="row g-3">
+
+                    {addresses.map(a => (
+
+                      <div className="col-md-6" key={a.id}>
+
+                        <label
+                          className={`d-block border rounded-4 p-3 h-100 ${
+                            a.id === selectedAddress
+                              ? "border-primary bg-primary-subtle"
+                              : "border-light-subtle bg-light"
+                          }`}
+                          style={{ cursor: "pointer" }}
+                        >
+
+                          <div className="d-flex gap-3">
+
+                            <input
+                              type="radio"
+                              className="form-check-input mt-1"
+                              onChange={() => setSelectedAddress(a.id)}
+                              checked={a.id === selectedAddress}
+                            />
+
+                            <div>
+
+                              <h6 className="fw-bold mb-2">
+                                {a.firstName} {a.lastName}
+                              </h6>
+
+                              <p className="text-secondary small mb-0">
+                                {a.address}
+                              </p>
+
+                              <p className="text-secondary small mb-0">
+                                {a.city}, {a.state}
+                              </p>
+
+                              <p className="text-secondary small mb-0">
+                                ID: {a.id}
+                              </p>
+
+                            </div>
+
+                          </div>
+
+                        </label>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+
+                ) : (
+
+                  <div className="text-center py-4 bg-light rounded-4">
+                    <div className="fs-2 mb-2">
+                      📍
+                    </div>
+
+                    <p className="text-secondary mb-0">
+                      No saved addresses yet.
+                    </p>
+                  </div>
+
+                )}
 
               </div>
-                
+
+            </div>
+
+
+            {/* ================= SHIPPING ADDRESS ================= */}
+
+            <div className="card border-0 shadow-sm rounded-4 mb-4">
+
+              <div className="card-body p-4">
+
+                <div className="d-flex align-items-center gap-3 mb-4">
+
+                  <div
+                    className="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                    style={{ width: "42px", height: "42px" }}
+                  >
+                    2
+                  </div>
+
+                  <div>
+                    <h4 className="fw-bold mb-1">
+                      Shipping Address
+                    </h4>
+
+                    <p className="text-secondary mb-0 small">
+                      Where should we deliver your order?
+                    </p>
+                  </div>
+
+                </div>
+
+
+                <div className="row g-3">
+
+                  <div className="col-12">
+
+                    <label className="form-label fw-semibold">
+                      Address
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="House number, street name"
+                      {...register("address")}
+                    />
+
+                  </div>
+
+
+                  <div className="col-md-6">
+
+                    <label className="form-label fw-semibold">
+                      City
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="Enter city"
+                      {...register("city")}
+                    />
+
+                  </div>
+
+
+                  <div className="col-md-6">
+
+                    <label className="form-label fw-semibold">
+                      State
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="Enter state"
+                      {...register("state")}
+                    />
+
+                  </div>
+
+
+                  <div className="col-md-6">
+
+                    <label className="form-label fw-semibold">
+                      ZIP Code
+                    </label>
+
+                    <input
+                      type="text"
+                      className="form-control form-control-lg rounded-3"
+                      placeholder="Enter ZIP code"
+                      {...register("pincode")}
+                    />
+
+                  </div>
+
+
+                  <div className="col-md-6">
+
+                    <label className="form-label fw-semibold">
+                      Country
+                    </label>
+
+                    <select
+                      className="form-select form-select-lg rounded-3"
+                      {...register("country")}
+                    >
+
+                      <option>
+                        Select Country
+                      </option>
+
+                      <option value={"US"}>
+                        United States
+                      </option>
+
+                      <option value={"CN"}>
+                        Canada
+                      </option>
+
+                      <option value={""}>
+                        United Kingdom
+                      </option>
+
+                      <option value={"IN"}>
+                        India
+                      </option>
+
+                    </select>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            {/* ADD ADDRESS BUTTON */}
+
+            <button
+              className="btn btn-primary btn-lg rounded-3 px-4 shadow-sm"
+              type="submit"
+            >
+              + Add Address
+            </button>
+
+          </form>
+
+        </div>
+
+
+        {/* ================= RIGHT SECTION ================= */}
+
+        <div className="col-lg-4">
+
+          <div
+            className="card border-0 shadow-sm rounded-4 sticky-top"
+            style={{ top: "20px" }}
+          >
+
+            <div className="card-body p-4">
+
+              <div className="d-flex justify-content-between align-items-center mb-4">
+
+                <h4 className="fw-bold mb-0">
+                  Order Summary
+                </h4>
+
+                <span className="badge bg-dark rounded-pill">
+                  {cartItems?.length || 0} items
+                </span>
+
+              </div>
+
+
+              {/* Products */}
+
+              {cartItems && cartItems.map(c => (
+
+                <div
+                  className="d-flex align-items-center gap-3 mb-3"
+                  key={c.product.id}
+                >
+
+                  <div className="position-relative">
+
+                    <img
+                      src={c.product.imageUrl}
+                      alt={c.product.name}
+                      className="rounded-3 border"
+                      style={{
+                        width: "65px",
+                        height: "65px",
+                        objectFit: "cover"
+                      }}
+                    />
+
+                    <span
+                      className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
+                    >
+                      {c.quantity}
+                    </span>
+
+                  </div>
+
+
+                  <div className="flex-grow-1">
+
+                    <h6 className="fw-semibold mb-1">
+                      {c.product.name}
+                    </h6>
+
+                    <small className="text-secondary">
+                      ${c.product.price} each
+                    </small>
+
+                  </div>
+
+
+                  <strong>
+                    ${(c.product.price * c.quantity).toFixed(2)}
+                  </strong>
+
+                </div>
+
               ))}
 
 
-              
-
-
-              <hr />
+              <hr className="my-4" />
 
 
               {/* Price Details */}
 
-              <div className="checkout-summary-row">
+              <div className="d-flex justify-content-between mb-3">
 
-                <span>
+                <span className="text-secondary">
                   Subtotal
                 </span>
 
-                <span>
-                  $59.99
+                <span className="fw-semibold">
+                  {cartItems
+                    ? `$${subtotal().toFixed(2)}`
+                    : "$0.00"
+                  }
                 </span>
 
               </div>
 
 
-              <div className="checkout-summary-row">
+              <div className="d-flex justify-content-between mb-3">
 
-                <span>
+                <span className="text-secondary">
                   Shipping
                 </span>
 
-                <span className="free">
+                <span className="text-success fw-semibold">
                   FREE
                 </span>
 
               </div>
 
 
-              <div className="checkout-summary-row">
+              <div className="d-flex justify-content-between mb-3">
 
-                <span>
+                <span className="text-secondary">
                   Tax
                 </span>
 
-                <span>
+                <span className="fw-semibold">
                   $0.00
                 </span>
 
@@ -394,39 +583,45 @@ const subtotal = () =>{
               <hr />
 
 
-              <div className="checkout-total">
+              <div className="d-flex justify-content-between align-items-center my-4">
 
-                <span>
+                <span className="fs-5 fw-semibold">
                   Total
                 </span>
 
-                <strong>
-                  {cartItems && subtotal()}
+                <strong className="fs-3 text-primary">
+                  {cartItems
+                    ? `$${subtotal().toFixed(2)}`
+                    : "$0.00"
+                  }
                 </strong>
 
               </div>
 
 
-              {/* Place Order */}
+              {/* Payment */}
 
-              <button className="place-order-btn">
-
-                🔒 Place Order
-
+              <button
+                className="btn btn-primary btn-lg w-100 rounded-3 fw-semibold py-3 shadow-sm"
+                onClick={handlePayment}
+              >
+                🔒 Pay with Razorpay
               </button>
 
 
-              <p className="checkout-security">
+              <div className="text-center mt-3">
 
-                Your payment information is encrypted
-                and securely processed.
+                <small className="text-secondary">
+                  🔐 Your payment information is encrypted
+                  and securely processed.
+                </small>
 
-              </p>
+              </div>
 
 
               <Link
                 to="/cart"
-                className="back-to-cart"
+                className="btn btn-outline-secondary w-100 rounded-3 mt-4"
               >
                 ← Back to Cart
               </Link>
@@ -440,7 +635,9 @@ const subtotal = () =>{
       </div>
 
     </div>
-  );
+  </div>
+);
+
 }
 
 export default Checkout;
